@@ -60,6 +60,10 @@ class PembayaranController extends Controller
             $siswa = Siswa::where('nisn', '=', $request->nisn)->first();
             $spp = Spp::where('id', '=', $siswa->id_spp)->first();
             $pembayaran = Pembayaran::where('nisn', '=', $siswa->nisn)->get();
+            $bapa = Pembayaran::where('nisn' , $request->nisn)->count();
+            $max = 36 - $bapa;
+            // $ibu = $siswa->id_masuk - $bapa;
+    
 
             if ($pembayaran->isEmpty()) {
                 $bln = 6;
@@ -79,13 +83,18 @@ class PembayaranController extends Controller
                     $tahun = $pembayaran->tahun_dibayar;
                 }
 
-                if ($pembayaran->tahun_dibayar == substr($spp->tahun, -4, 4 ) && $pembayaran->bulan_dibayar == 'mei') {
-                    return back()->with('error', 'sudah lunas');
+                if ($max == 0) {
+                    return back()->with('error', 'Sudah lunas');
                 }
+
+                // if ($ibu == 0)
+                // {
+                //     return back()->with('error', 'Sudah lunas');   
+                // }
             }
 
             if ($request->jumlah_bayar < $spp->nominal) {
-                return back()->with('tjumlah_bayar', 'Uang yang dimasukan tidak sesuai');
+                return back()->with('error', 'Uang yang dimasukan tidak sesuai');
             }
 
             $pembayaranSimpan = Pembayaran::create([
@@ -130,10 +139,13 @@ class PembayaranController extends Controller
         $pembayaran = Pembayaran::where('nisn', '=', $nisn)
             ->orderBy('id', 'Desc')->latest()
             ->first();
-
+        
+        $bapa = Pembayaran::where('nisn', '=', $nisn)->count();
+        $max = 36 - $bapa;
+        $ibu = $siswa->id_masuk - $bapa;
 
         if ($pembayaran == null) {
-            $datas = [
+            $data = [
                 'nominal' => $spp->nominal * $berapa,
                 'bulan' => 'belum pernah bayar',
                 'tahun' => '',  
@@ -145,10 +157,10 @@ class PembayaranController extends Controller
             ];
         } else {
 
-            if ($pembayaran->tahun_dibayar == substr($spp->tahun, -4, 4) && $pembayaran->bulan_dibayar == 'juni') {
-                $datas = [
+            if ($max == 0) {
+                $data = [
                     'nominal' => $spp->nominal * $berapa,
-                    'bulan' => 'sudah lunas',
+                    'bulan' => 'Sudah lunas',
                     'tahun' => '',
                     'kelas' => $kelas->name_kelas,
                     'nama' => $siswa->nama,
@@ -156,8 +168,19 @@ class PembayaranController extends Controller
                     'alamat' => $siswa->alamat,
                     'no_telp' => $siswa->no_telp
                 ];
+            // }if ($ibu == 0) {
+            //     $data = [
+            //         'nominal' => $spp->nominal * $berapa,
+            //         'bulan' => 'Sudah lunas',
+            //         'tahun' => '',
+            //         'kelas' => $kelas->name_kelas,
+            //         'nama' => $siswa->nama,
+            //         'nis' => $siswa->nis,
+            //         'alamat' => $siswa->alamat,
+            //         'no_telp' => $siswa->no_telp
+            //     ];
             } else {
-                $datas = [
+                $data = [
                     'nominal' => $spp->nominal * $berapa,
                     'bulan' => $pembayaran->bulan_dibayar,
                     'tahun' => $pembayaran->tahun_dibayar,
@@ -170,8 +193,7 @@ class PembayaranController extends Controller
             }
         }
 
-        return response()->json($datas);
-
+        return response()->json($data);
     }
 
     /**

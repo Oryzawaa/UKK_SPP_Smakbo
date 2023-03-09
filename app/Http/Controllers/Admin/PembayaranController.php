@@ -60,12 +60,9 @@ class PembayaranController extends Controller
             $spp = Spp::where('id', '=', $siswa->id_spp)->first();
             $pembayaran = Pembayaran::where('nisn', '=', $siswa->nisn)->get();
             $bapa = Pembayaran::where('nisn' , $request->nisn)->count();
-
             $max = 36 - $bapa;
-
-            // dd($max);
-            
-            
+            $ibu = $siswa->id_masuk - $bapa;
+    
 
             if ($pembayaran->isEmpty()) {
                 $bln = 6;
@@ -89,10 +86,14 @@ class PembayaranController extends Controller
                     return back()->with('error', 'Sudah lunas');
                 }
 
+                if ($ibu == 0)
+                {
+                    return back()->with('error', 'Sudah lunas');   
+                }
             }
 
             if ($request->jumlah_bayar < $spp->nominal) {
-                return back()->with('tjumlah_bayar', 'Uang yang dimasukan tidak sesuai');
+                return back()->with('error', 'Uang yang dimasukan tidak sesuai');
             }
 
             $pembayaranSimpan = Pembayaran::create([
@@ -140,7 +141,7 @@ class PembayaranController extends Controller
         
         $bapa = Pembayaran::where('nisn', '=', $nisn)->count();
         $max = 36 - $bapa;
-
+        $ibu = $siswa->id_masuk - $bapa;
 
         if ($pembayaran == null) {
             $data = [
@@ -156,6 +157,17 @@ class PembayaranController extends Controller
         } else {
 
             if ($max == 0) {
+                $data = [
+                    'nominal' => $spp->nominal * $berapa,
+                    'bulan' => 'Sudah lunas',
+                    'tahun' => '',
+                    'kelas' => $kelas->name_kelas,
+                    'nama' => $siswa->nama,
+                    'nis' => $siswa->nis,
+                    'alamat' => $siswa->alamat,
+                    'no_telp' => $siswa->no_telp
+                ];
+            }if ($ibu == 0) {
                 $data = [
                     'nominal' => $spp->nominal * $berapa,
                     'bulan' => 'Sudah lunas',

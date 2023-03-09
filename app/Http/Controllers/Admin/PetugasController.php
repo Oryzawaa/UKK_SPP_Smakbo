@@ -38,6 +38,10 @@ class PetugasController extends Controller
      */
     public function store(Request $request)
     {
+
+        $petugas = User::where('username' , $request->username)->first();
+
+
         $request->validate([
             'username' => 'required',
             'name_petugas' => 'required',
@@ -45,16 +49,22 @@ class PetugasController extends Controller
 
         ]);
 
-        User::create([
-            'username' => $request->username,
-            'name_petugas' =>$request->name_petugas,
-            'level' =>'petugas',
-            'password' =>bcrypt($request->password),
-        ]);
-
-        return redirect()->route('admin.index.petugas')
-        ->with('success' , 'Data berhasil disimpan');
-
+        if($petugas)
+        {
+            return redirect()->route('admin.index.petugas')
+            ->with('error' , 'Username sudah terdaftar!!');
+        }else
+        {
+            User::create([
+                'username' => $request->username,
+                'name_petugas' =>$request->name_petugas,
+                'level' =>'petugas',
+                'password' =>bcrypt($request->password),
+            ]);
+    
+            return redirect()->route('admin.index.petugas')
+            ->with('success' , 'Data berhasil disimpan');
+        }
 
     }
 

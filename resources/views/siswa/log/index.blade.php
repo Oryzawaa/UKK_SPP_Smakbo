@@ -27,7 +27,6 @@
                                     <th>Tgl bayar</th>
                                     <th>Bulan dibayar</th>
                                     <th>Tahun dibayar</th>
-                                    <th>Spp</th>
                                     <th>Jumlah bayar</th>
                                     {{-- <th colspan="2">Action</th> --}}
                                 </tr>
@@ -41,7 +40,7 @@
                                     <td>{{ $s->tgl_bayar }}</td>
                                     <td>{{ $s->bulan_dibayar }}</td>
                                     <td>{{ $s->tahun_dibayar }}</td>
-                                    <td>{{ $s->tahun }}</td>
+                                    {{-- <td>{{ $s->tahun }}</td> --}}
                                     <td>{{ $s->jumlah_bayar}}</td>
                                     </td>
                                 </tr>

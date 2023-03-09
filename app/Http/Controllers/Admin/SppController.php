@@ -43,13 +43,24 @@ class SppController extends Controller
             'nominal' => 'required'
         ]);
 
-        Spp::create([
-            'tahun' => $request->tahun,
-            'nominal' => $request->nominal,
-        ]);
+        $spp = Spp::where('tahun' , $request->tahun)->first();
 
-        return redirect()->route('admin.index.spp')
-        ->with('success' , 'Data berhasil disimpan');
+        if($spp)
+        {
+            return redirect()->route('admin.index.spp')
+            ->with('error' , 'Spp sudah ada!!');
+        }else
+        {
+            Spp::create([
+                'tahun' => $request->tahun,
+                'nominal' => $request->nominal,
+                'total_bulan' => $request->total_bulan
+            ]);
+    
+            return redirect()->route('admin.index.spp')
+            ->with('success' , 'Data berhasil disimpan');
+        }
+
     }
 
     /**

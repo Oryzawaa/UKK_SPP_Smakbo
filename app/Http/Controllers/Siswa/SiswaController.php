@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Siswa;
 use App\Http\Controllers\Controller;
-use App\Models\{view_bayar};
+use App\Models\{view_bayar , Pembayaran};
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -22,6 +22,9 @@ class SiswaController extends Controller
     public function log()
     {
         $data = view_bayar::where('nis', Auth::user()->username)->get();
+        // $datas = Pembayaran::where('nisn' , $data->nisn)->fir();
+
+        // dd($datas);
         return view('siswa.log.index', compact('data'));
     }
 

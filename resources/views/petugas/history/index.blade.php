@@ -43,7 +43,7 @@
                                     <td>{{ $s->bulan_dibayar }}</td>
                                     <td>{{ $s->tahun_dibayar }}</td>
                                     <td>{{ $s->tahun }}</td>
-                                    <td>{{ $s->jumlah_bayar}}</td>
+                                    <td>{{ $s->nominal}}</td>
                                     </td>
                                 </tr>
                                 @endforeach

@@ -39,7 +39,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete</button>
-                                        <a data-bs-toggle="modal" data-bs-target="#modalUpdate{{ $s->id }}" class="btn btn-warning">Edit</a>
+                                        <button data-bs-toggle="modal" data-bs-target="#modalUpdate{{ $s->id }}" class="btn btn-success">Edit</button>
                                         </form>
                                         <div class="modal fade" id="modalUpdate{{ $s->id}} " data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">   

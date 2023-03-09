@@ -47,6 +47,13 @@
                                         <option value="{{ $t->id }}">{{ $t->tahun }}</option>
                                         @endforeach
                                     </select>
+                                    <strong>Tahun masuk</strong>
+                                    <select name="tahun_masuk" id="" class="form-control mb-3">
+                                        <option value="" disabled selected>Pilih tahun masuk</option>
+                                        @foreach($spp as $s)
+                                        <option value="{{ $s->total_bulan }}">{{ $s->tahun }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -126,14 +133,20 @@
                                                         <input name="alamat" id="" cols="30" rows="10" class="form-control mb-3" value="{{ $s->alamat }}">
                                                         <strong>Kelas</strong>
                                                         <select name="id_kelas" id="id_kelas" class="form-control mb-3">
-                                                            @foreach($kelas as $s)
-                                                            <option value="{{ $s->id_kelas }}" {{($s->id_kelas == $s->id) ? 'selected' : ''}} >{{ $s->name_kelas }}</option>
+                                                            @foreach($kelas as $k)
+                                                            <option value="{{ $s->id_kelas }}" {{($s->id_kelas == $k->id) ? 'selected' : ''}} >{{ $k->name_kelas }}</option>
                                                             @endforeach
                                                         </select>
                                                         <strong>SPP</strong>
                                                         <select name="id_spp" id="id_spp" class="form-control mb-3">
                                                             @foreach($spp as $t)
-                                                            <option value="{{ $t->id_spp }}" {{($t->id_spp == $t->id) ? 'selected' : ''}} >{{ $t->tahun }}</option>
+                                                            <option value="{{ $t->id }}" {{ ($s->id_spp == $t->id) ? 'selected' : ''}} >{{ $t->tahun }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <strong>Tahun masuk</strong>
+                                                        <select name="id_masuk" id="id_spp" class="form-control mb-3">
+                                                            @foreach($spp as $t)
+                                                            <option value="{{ $t->total_bulan }}"  {{ ($s->id_spp == $t->id) ? 'selected' : '' }} >{{ $t->tahun }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>

@@ -28,6 +28,8 @@
                                     <strong></strong>
                                     <strong>Nominal</strong>
                                     <input type="number" name="nominal" class="form-control mb-3">
+                                    <strong>Total bulan</strong>
+                                    <input type="number" name="total_bulan" class="form-control mb-3">
                                 </div>
                                 
                             </div>
@@ -89,11 +91,11 @@
                                                         <strong>Nominal</strong>
                                                         <input type="number" name="nominal" id="" class="form-control mb-3" value="{{$s->nominal }}">
                                                     </div>
-                                                    </form>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                     <button type="submit" class="btn btn-primary">Simpan</button>
+                                                </form>
                                                 </div>
                                                 </div>
                                             </div>                                        

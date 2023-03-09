@@ -43,13 +43,22 @@ class KelasController extends Controller
             'kompetensi_keahlian' => 'required'
         ]);
 
-        Kelas::create([
-            'name_kelas' => $request->name_kelas,
-            'kompetensi_keahlian' => $request->kompetensi_keahlian,
-        ]);
+        $kelas = Kelas::where('name_kelas' , $request->name_kelas)->first();
 
-        return redirect()->route('admin.index.kelas')
-        ->with('success' , 'Data berhasil disimpan');
+        if($kelas){
+            return redirect()->route('admin.index.kelas')
+            ->with('error' , 'Kelas sudah tersedia!!');
+        }else
+        {
+            Kelas::create([
+                'name_kelas' => $request->name_kelas,
+                'kompetensi_keahlian' => $request->kompetensi_keahlian,
+            ]);
+
+            return redirect()->route('admin.index.kelas')
+            ->with('success' , 'Data berhasil disimpan');
+        }
+
     }
 
     /**

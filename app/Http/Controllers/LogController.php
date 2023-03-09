@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\{view_bayar};
 use App\Exports\PembayaranExport;
 use Maatwebsite\Excel\Facades\Excel;
+use DB;
 
 class LogController extends Controller
 {
@@ -16,7 +17,10 @@ class LogController extends Controller
      */
     public function index()
     {
-        $data = view_bayar::all();
+        $data = DB::table('view_bayar')
+        ->join('spp' , 'view_bayar.tahun_dibayar' , '=' , 'spp.tahun')
+        ->get();
+
 
         return view('petugas.history.index' , compact('data'));
     }

@@ -45,7 +45,7 @@
                                     <td>{{ $s->bulan_dibayar }}</td>
                                     <td>{{ $s->tahun_dibayar }}</td>
                                     <td>{{ $s->tahun }}</td>
-                                    <td>{{ $s->jumlah_bayar}}</td>
+                                    <td>{{ $s->nominal}}</td>
                                     {{-- <td>
                                         <form action="{{ route('admin.destroy.pembayaran' , $s->id) }}" method="POST" onsubmit="return confirm('Yakin hapus data ini?')">
                                         @csrf

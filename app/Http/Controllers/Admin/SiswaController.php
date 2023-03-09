@@ -4,7 +4,7 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Siswa , Kelas , Spp , User};
+use App\Models\{Siswa , Kelas , Spp , User , Pembayaran , view_bayar};
 use DB;
 
 class SiswaController extends Controller
@@ -46,8 +46,8 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
 
-        $siswa = Siswa::where('nisn' , '=' ,  $request->nisn)->get();
-        $nis =  Siswa::where('nisn' , '=' ,  $request->nis)->get();
+        $siswa = Siswa::where('nisn' , '=' ,  $request->nisn)->first();
+        $nis =  Siswa::where('nis' , '=' ,  $request->nis)->get();
 
         // dd($siswa);
 
@@ -59,9 +59,10 @@ class SiswaController extends Controller
             'alamat' => 'required',
             'no_telp' => 'required',
             'id_spp' => 'required',
+            'tahun_masuk' => 'required'
         ]);
 
-        if($request->nisn == $siswa)
+        if($siswa)
         {
             return redirect()->route('admin.index.siswa')
             ->with('error' , 'Nisn / Nis sudah terdaftar');
@@ -76,6 +77,7 @@ class SiswaController extends Controller
                 'alamat' => $request->alamat,
                 'no_telp' => $request->no_telp,
                 'id_spp' => $request->id_spp,
+                'id_masuk' => $request->tahun_masuk
             ]);
     
             User::create([
@@ -127,17 +129,6 @@ class SiswaController extends Controller
      */
     public function update(Request $request, $nisn)
     {
-        $request->validate([
-            'nisn' => 'required',
-            'nis' => 'required',
-            'nama' => 'required',
-            'id_kelas   ' => 'required',
-            'alamat' => 'required',
-            'no_telp' => 'required',
-            'id_spp' => 'required',
-        ]);
-
-        // dd($nisn);
 
         Siswa::where('nisn' , $nisn)->update([
             'nisn' => $request->nisn,
@@ -147,6 +138,16 @@ class SiswaController extends Controller
             'alamat' => $request->alamat,
             'no_telp' => $request->no_telp,
             'id_spp' => $request->id_spp,
+            'id_masuk' => $request->id_masuk
+            
+        ]);
+
+        User::where('username' , $nisn)->update([
+            'username' =>   $request->nisn,
+            'name_petugas' =>   $request->nama,
+            'password' =>   $request->nisn,
+            'level' =>   'siswa',
+
         ]);
 
         return redirect()->route('admin.index.siswa')
@@ -162,8 +163,14 @@ class SiswaController extends Controller
     public function destroy($nisn)
     {
         Siswa::where('nisn' , $nisn)->delete();
+        Pembayaran::where('nisn' , $nisn)->delete();
+        User::where('username' , $nisn)->delete();
+        // view_bayar::where('nisn' , $nisn)->delete();
+
+
 
         return redirect()->route('admin.index.siswa')
         ->with('success' , 'Data berhasil dihapus');
     }
+
 }

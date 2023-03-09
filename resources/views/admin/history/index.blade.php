@@ -51,7 +51,7 @@
                                     <td>{{ $s->tgl_bayar }}</td>
                                     <td>{{ $s->bulan_dibayar }}</td>
                                     <td>{{ $s->tahun_dibayar }}</td>
-                                    <td>{{ $s->jumlah_bayar}}</td>
+                                    <td>{{ $s->nominal}}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

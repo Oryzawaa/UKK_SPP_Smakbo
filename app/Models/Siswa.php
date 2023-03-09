@@ -17,6 +17,7 @@ class Siswa extends Model
         'id_kelas',
         'alamat',
         'no_telp',
-        'id_spp'
+        'id_spp',
+        'id_masuk',
     ];
 }

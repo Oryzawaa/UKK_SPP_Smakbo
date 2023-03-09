@@ -12,6 +12,7 @@ class Spp extends Model
     protected $table = 'spp';
     protected $fillable = [
         'tahun',
-        'nominal'
+        'nominal',
+        'total_bulan'
     ];
 }
